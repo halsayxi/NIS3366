@@ -14,7 +14,7 @@ from .dialog_interface import DialogInterface
 from .menu_interface import MenuInterface
 from .setting_interface import SettingInterface
 from .text_interface import TextInterface
-from ..common.config import ZH_SUPPORT_URL, EN_SUPPORT_URL, cfg
+from ..common.config import cfg
 from ..common.icon import Icon
 from ..common.signal_bus import signalBus
 from ..common.translator import Translator

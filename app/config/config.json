@@ -1,17 +1,13 @@
 {
-    "Material": {
-        "AcrylicBlurRadius": 15
-    },
     "Update": {
         "CheckUpdateAtStartUp": true
     },
     "Folders": {
-        "Download": "D:/桌面/项目管理与软件设计/大作业/NIS3366/NIS3366/app/download",
-        "LocalMusic": []
+        "Download": "D:/桌面/项目管理与软件设计/大作业/NIS3366/NIS3366/app/download"
     },
     "MainWindow": {
         "DpiScale": "Auto",
-        "Language": "Auto",
+        "Language": "zh_CN",
         "MicaEnabled": true
     },
     "QFluentWidgets": {

@@ -34,9 +34,6 @@ def isWin11():
 class Config(QConfig):
     """ Config of application """
 
-    # folders
-    musicFolders = ConfigItem(
-        "Folders", "LocalMusic", [], FolderListValidator())
     downloadFolder = ConfigItem(
         "Folders", "Download", "app/download", FolderValidator())
 
@@ -47,23 +44,19 @@ class Config(QConfig):
     language = OptionsConfigItem(
         "MainWindow", "Language", Language.AUTO, OptionsValidator(Language), LanguageSerializer(), restart=True)
 
-    # Material
-    blurRadius  = RangeConfigItem("Material", "AcrylicBlurRadius", 15, RangeValidator(0, 40))
-
     # software update
     checkUpdateAtStartUp = ConfigItem("Update", "CheckUpdateAtStartUp", True, BoolValidator())
 
 
-YEAR = 2023
-AUTHOR = "zhiyiYo"
+YEAR = 2024
+AUTHOR = "NIS3366"
 VERSION = "0.1.0"
-HELP_URL = "https://qfluentwidgets.com"
+HELP_URL = "https://github.com/halsayxi/NIS3366"
 REPO_URL = "https://github.com/halsayxi/NIS3366"
 DESIGN_URL = "https://github.com/halsayxi/NIS3366"
 FEEDBACK_URL = "https://github.com/halsayxi/NIS3366/issues"
-RELEASE_URL = "https://github.com/zhiyiYo/PyQt-Fluent-Widgets/releases/latest"
-ZH_SUPPORT_URL = "https://qfluentwidgets.com/zh/price/"
-EN_SUPPORT_URL = "https://qfluentwidgets.com/price/"
+RELEASE_URL = "https://github.com/halsayxi/NIS3366"
+
 
 
 cfg = Config()
