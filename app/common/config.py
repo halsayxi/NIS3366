@@ -56,10 +56,10 @@ class Config(QConfig):
 
 YEAR = 2023
 AUTHOR = "zhiyiYo"
-VERSION = __version__
+VERSION = "0.1.0"
 HELP_URL = "https://qfluentwidgets.com"
-REPO_URL = "https://github.com/zhiyiYo/PyQt-Fluent-Widgets"
-EXAMPLE_URL = "https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/master/examples"
+REPO_URL = "https://github.com/halsayxi/NIS3366"
+EXAMPLE_URL = "https://github.com/halsayxi/NIS3366"
 FEEDBACK_URL = "https://github.com/zhiyiYo/PyQt-Fluent-Widgets/issues"
 RELEASE_URL = "https://github.com/zhiyiYo/PyQt-Fluent-Widgets/releases/latest"
 ZH_SUPPORT_URL = "https://qfluentwidgets.com/zh/price/"
