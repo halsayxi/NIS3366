@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap, QPainter, QColor, QBrush, QPainterPath, QLinear
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 
 from qfluentwidgets import ScrollArea, isDarkTheme, FluentIcon
-from ..common.config import cfg, HELP_URL, REPO_URL, EXAMPLE_URL, FEEDBACK_URL
+from ..common.config import cfg, HELP_URL, REPO_URL, DESIGN_URL, FEEDBACK_URL
 from ..common.icon import Icon, FluentIconBase
 from ..components.link_card import LinkCardView
 from ..components.sample_card import SampleCardView
@@ -33,31 +33,31 @@ class BannerWidget(QWidget):
 
         self.linkCardView.addCard(
             ':/gallery/images/logo.png',
-            self.tr('Getting started'),
-            self.tr('An overview of app development options and samples.'),
+            self.tr('开始入门'),
+            self.tr('通过查看使用介绍视频，查阅使用方法和案例。'),
             HELP_URL
         )
 
         self.linkCardView.addCard(
             FluentIcon.GITHUB,
-            self.tr('GitHub repo'),
+            self.tr('GitHub仓库'),
             self.tr(
-                'The latest fluent design controls and styles for your applications.'),
+                '软件的 GitHub 仓库，您可以在这里查看源代码。'),
             REPO_URL
         )
 
         self.linkCardView.addCard(
-            FluentIcon.CODE,
-            self.tr('Code samples'),
+            FluentIcon.LABEL,
+            self.tr('设计文档'),
             self.tr(
-                'Find samples that demonstrate specific tasks, features and APIs.'),
-            EXAMPLE_URL
+                '点击链接，开始了解我们软件的内部机制和设计理念。'),
+            DESIGN_URL
         )
 
         self.linkCardView.addCard(
             FluentIcon.FEEDBACK,
-            self.tr('Send feedback'),
-            self.tr('Help us improve PyQt-Fluent-Widgets by providing feedback.'),
+            self.tr('发送反馈'),
+            self.tr('通过提供反馈帮助我们改进软件安全管家。'),
             FEEDBACK_URL
         )
 
@@ -131,13 +131,13 @@ class HomeInterface(ScrollArea):
             title="恶意软件检测",
             content=self.tr(
                 "运用大模型检测软件是否安全"),
-            routeKey="basicInputInterface",
+            routeKey="MalwareDetectionInterface",
             index=0
         )
         basicInputView.addSampleCard(
-            icon=":/gallery/images/controls/DropDownButton.png",
-            title="安全报告",
-            content=self.tr("根据检测历史生成安全报告"),
+            icon=":/gallery/images/controls/Checkbox.png",
+            title="恶意流量监测",
+            content=self.tr("运用大模型检测流量是否安全"),
             routeKey="dialogInterface",
             index=8
         )
