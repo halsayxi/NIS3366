@@ -9,4 +9,4 @@ class Translator(QObject):
         self.text = self.tr('密码本')
         self.menus = self.tr('程序正确性检测')
         self.dialogs = self.tr('安全报告')
-        self.basicInput = self.tr('恶意软件检测')
+        self.malDetec = self.tr('恶意软件检测')

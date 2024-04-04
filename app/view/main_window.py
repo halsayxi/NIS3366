@@ -9,7 +9,7 @@ from qfluentwidgets import FluentIcon as FIF
 
 from .gallery_interface import GalleryInterface
 from .home_interface import HomeInterface
-from .basic_input_interface import BasicInputInterface
+from .malware_detection_interface import MalwareDetectionInterface
 from .dialog_interface import DialogInterface
 from .menu_interface import MenuInterface
 from .setting_interface import SettingInterface
@@ -29,7 +29,7 @@ class MainWindow(FluentWindow):
 
         # create sub interface
         self.homeInterface = HomeInterface(self)
-        self.basicInputInterface = BasicInputInterface(self)
+        self.MalwareDetectionInterface = MalwareDetectionInterface(self)
         self.dialogInterface = DialogInterface(self)
         self.menuInterface = MenuInterface(self)
         self.settingInterface = SettingInterface(self)
@@ -56,7 +56,7 @@ class MainWindow(FluentWindow):
         self.navigationInterface.addSeparator()
 
         pos = NavigationItemPosition.SCROLL
-        self.addSubInterface(self.basicInputInterface, FIF.CHECKBOX,t.basicInput, pos)
+        self.addSubInterface(self.MalwareDetectionInterface, FIF.SEARCH_MIRROR,t.malDetec, pos)
         self.addSubInterface(self.dialogInterface, FIF.MESSAGE, t.dialogs, pos)
         self.addSubInterface(self.menuInterface, Icon.MENU, t.menus, pos)
         self.addSubInterface(self.textInterface, Icon.TEXT, t.text, pos)
