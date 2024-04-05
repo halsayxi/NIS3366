@@ -134,7 +134,7 @@ class DialogInterface(GalleryInterface):
             icon=None,
             title='Lesson 5',
             content=self.tr("The shortest shortcut is to take a detour."),
-            image=":/gallery/images/Gyro.jpg",
+            image="app/resource/images/Gyro.jpg",
             isClosable=True,
             tailPosition=pos,
         )
@@ -159,7 +159,7 @@ class DialogInterface(GalleryInterface):
         view = FlyoutView(
             title=self.tr('Julius·Zeppeli'),
             content=self.tr("Where the tennis ball will land when it touches the net, no one can predict. \nIf that moment comes, I hope the 'goddess' exists. \nIn that case, I would accept it no matter which side the ball falls on."),
-            image=':/gallery/images/SBR.jpg',
+            image='app/resource/images/SBR.jpg',
         )
 
         # add button to view

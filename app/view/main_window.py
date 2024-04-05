@@ -66,7 +66,7 @@ class MainWindow(FluentWindow):
     def initWindow(self):
         self.resize(960, 780)
         self.setMinimumWidth(760)
-        self.setWindowIcon(QIcon(':/gallery/images/logo.png'))
+        self.setWindowIcon(QIcon('app/resource/images/logo.png'))
         self.setWindowTitle('软件安全管家')
 
         self.setMicaEffectEnabled(cfg.get(cfg.micaEnabled))

@@ -30,7 +30,7 @@ app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
 locale = cfg.get(cfg.language).value
 translator = FluentTranslator(locale)
 galleryTranslator = QTranslator()
-galleryTranslator.load(locale, "gallery", ".", ":/gallery/i18n")
+galleryTranslator.load(locale, "gallery", ".", "app/resource/i18n")
 
 app.installTranslator(translator)
 app.installTranslator(galleryTranslator)
