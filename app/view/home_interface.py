@@ -143,10 +143,10 @@ class HomeInterface(ScrollArea):
         )
         basicInputView.addSampleCard(
             icon=":/gallery/images/controls/ComboBox.png",
-            title="程序正确性检测",
+            title="程序正确性验证",
             content=self.tr(
-                "检测程序是否正确"),
-            routeKey="menuInterface",
+                "验证程序行为是否符合预期"),
+            routeKey="verifierInterface",
             index=10
         )
         basicInputView.addSampleCard(
