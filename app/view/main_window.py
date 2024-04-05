@@ -100,4 +100,4 @@ class MainWindow(FluentWindow):
         for w in interfaces:
             if w.objectName() == routeKey:
                 self.stackedWidget.setCurrentWidget(w, False)
-                w.scrollToCard(index)
+                #w.scrollToCard(index)
