@@ -202,7 +202,7 @@ class HoareProver():
             print_with_tab_prefix("计算if语句的最弱前置条件\n", n, self.output)
             print_with_tab_prefix("计算条件成立时子语句的最弱前置条件", n, self.output)
 
-            c1_flag, wpre_c1 = self.weakest_pre(c1, True, postcond)
+            c1_flag, wpre_c1 = self.weakest_pre(c1, True, postcond, n)
             if c1_flag:
                 print_with_tab_prefix("条件成立时子语句的最弱前置条件为\n"+ str(wpre_c1), n, self.output)
                 wpre_c2 = postcond
@@ -224,28 +224,29 @@ class HoareProver():
         
         elif code.data == "while":
             inv, guard, c = code.children
-            print_with_tab_prefix("计算while语句的最弱前置条件", n, self.output)
+            print_with_tab_prefix("计算while语句循环体的最弱前置条件", n, self.output)
             inv = self.bool_exp_to_z3(inv)
             guard = self.bool_exp_to_z3(guard)
             c_flag, wpre_c = self.weakest_pre(c, True, inv, n+1)
 
             if c_flag:
-                print_with_tab_prefix("while语句最弱前置条件为\n" + str(wpre_c), n, self.output)
-                wpre = z3.And(z3.Implies(z3.And(guard, inv), wpre_c), z3.Implies(z3.And(z3.Not(guard), inv), postcond))
-                if self.prove_formula(wpre):
+                print_with_tab_prefix("循环体的最弱前置条件为\n" + str(wpre_c), n, self.output)
+                wpre_flag = z3.And(z3.Implies(z3.And(guard, inv), wpre_c), z3.Implies(z3.And(z3.Not(guard), inv), postcond))
+                if self.prove_formula(wpre_flag, n):
                     print_with_tab_prefix("循环不变式" + str(inv) + "蕴含后续条件", n, self.output)
                     print_with_tab_prefix("返回循环不变式\n", n, self.output)
                     return True, inv
             print_with_tab_prefix("循环不变式" + str(inv) + "不蕴含后续条件，请尝试新的循环不变式，或检查程序的正确性\n", n, self.output)    
             return False, postcond
 
-    def prove_formula(self, what_to_prove):
+    def prove_formula(self, what_to_prove, n):
         '''检验公式正确性'''
         s = z3.Solver()
         s.add(z3.Not(what_to_prove))
         if str(s.check()) == "unsat":
             return True
         else:
+            print_with_tab_prefix("反例："+str(s.model()), n, self.output)
             return False
     
     def prove_program(self, precond, code, postcond):
@@ -254,7 +255,7 @@ class HoareProver():
         if flag:
             formula_to_prove = z3.Implies(precond, wpre)
             self.output.append("最终验证\n"+str(formula_to_prove))
-            flag = self.prove_formula(formula_to_prove)
+            flag = self.prove_formula(formula_to_prove, 0)
 
         return flag 
 
