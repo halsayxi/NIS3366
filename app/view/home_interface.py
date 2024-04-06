@@ -138,7 +138,7 @@ class HomeInterface(ScrollArea):
             icon="app/resource/images/controls/Checkbox.png",
             title="恶意流量监测",
             content=self.tr("运用大模型检测流量是否安全"),
-            routeKey="dialogInterface",
+            routeKey="MalTrafficMonitorInterface",
             index=8
         )
         basicInputView.addSampleCard(
