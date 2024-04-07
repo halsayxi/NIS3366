@@ -43,8 +43,7 @@ class Database:
 
     # 从数据库中删除某个密码
     def delete_password(self, app_name):
-        self.db.collection.delete_one({'app_name': app_name})
+        self.db.collection.delete_one({"app_name": app_name})
 
-    # 从数据库中删除密钥
     def delete_key(self):
         self.db.collection.delete_one({'type': 'key'})

@@ -33,45 +33,25 @@ class TextInterface(GalleryInterface):
         self.db = Database()
         self.is_valid_key = False
         self.user_input = None
-        passwords = self.db.get_all_passwords()
-        app_names = [password['app_name'] for password in passwords]
 
         self.listWidget = ListWidget()
-
-        # 添加列表项
-        for app_name in app_names:
-            # 创建一个新的QWidget
-            widget = QWidget()
-            layout = QHBoxLayout(widget)
-
-            # 创建一个QLabel和一个QPushButton
-            label = QLabel(app_name)
-            button = PushButton("查看密钥")
-            button.clicked.connect(lambda checked, app_name=app_name: self.get_password(app_name))
-
-            # 将QLabel和QPushButton添加到布局中
-            layout.addWidget(label)
-            layout.addWidget(button)
-
-            # 创建一个QListWidgetItem，并将QWidget设置为其widget
-            item = QListWidgetItem(self.listWidget)
-            item.setSizeHint(widget.sizeHint())
-            self.listWidget.addItem(item)
-            self.listWidget.setItemWidget(item, widget)
+        self.load_passwords()
 
         self.listWidget.setFixedHeight(500)
         self.vBoxLayout.addWidget(self.listWidget)
 
         self.button = PushButton(self.tr('创建新密码'))
         self.button.clicked.connect(self.new_password)
+        self.button.setMaximumWidth(200)
         self.vBoxLayout.addWidget(self.button)
 
     def new_password(self):
         w = GetKeyMessage(self)
-        key = None
         if w.exec():
             key = w.urlLineEdit.text()
             self.is_valid_key = self.password_manager.is_valid_key(key)
+        else:
+            return
         w = GeneratePassword(self)
         if not self.is_valid_key:
             w = Dialog("ERROR", "密钥错误")
@@ -89,6 +69,15 @@ class TextInterface(GalleryInterface):
             length = int(w.length.text())
             app_name = w.app_name.text()
             key_hash = hash_key(key)
+
+            # 检查是否至少选择了一个字符种类
+            if not (uppercase or lowercase or has_digits or has_special_chars):
+                w = Dialog("ERROR", "请至少选择一个字符种类")
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
+                return
 
             if self.db.is_app_name_exists(app_name):
                 w = Dialog("ERROR", "应用已存在")
@@ -131,6 +120,27 @@ class TextInterface(GalleryInterface):
                     print('确认')
                 else:
                     print('取消')
+        else:
+            return
+
+    def delete_password(self, app_name):
+        w = GetKeyMessage(self)
+        if not self.db.get_key():
+            self.initialize_key()
+        if w.exec():
+            key = w.urlLineEdit.text()
+            self.is_valid_key = self.password_manager.is_valid_key(key)
+            if not self.is_valid_key:
+                w = Dialog("ERROR", "密钥错误")
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
+            else:
+                self.db.delete_password(app_name)
+                self.load_passwords()
+        else:
+            return
 
     def load_passwords(self):
         self.listWidget.clear()  # 清空列表
@@ -145,12 +155,17 @@ class TextInterface(GalleryInterface):
 
             # 创建一个QLabel和一个QPushButton
             label = QLabel(app_name)
-            button = PushButton("查看密钥")
-            button.clicked.connect(lambda checked, app_name=app_name: self.get_password(app_name))
+            view_button = PushButton("查看密钥")
+            delete_button = PushButton("删除密码")
+            view_button.setMaximumWidth(150)
+            delete_button.setMaximumWidth(150)
+            view_button.clicked.connect(lambda checked, app_name=app_name: self.get_password(app_name))
+            delete_button.clicked.connect(lambda checked, app_name=app_name: self.delete_password(app_name))
 
             # 将QLabel和QPushButton添加到布局中
             layout.addWidget(label)
-            layout.addWidget(button)
+            layout.addWidget(view_button)
+            layout.addWidget(delete_button)
 
             # 创建一个QListWidgetItem，并将QWidget设置为其widget
             item = QListWidgetItem(self.listWidget)
