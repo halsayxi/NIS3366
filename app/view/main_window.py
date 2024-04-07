@@ -21,6 +21,7 @@ from ..common.translator import Translator
 from ..common import resource
 
 
+
 class MainWindow(FluentWindow):
 
     def __init__(self):

@@ -1,0 +1,4 @@
+# globals.py
+
+username = None
+

@@ -17,7 +17,6 @@ from ..common.style_sheet import StyleSheet
 
 class SettingInterface(ScrollArea):
     """ Setting interface """
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.scrollWidget = QWidget()
@@ -65,14 +64,6 @@ class SettingInterface(ScrollArea):
             ],
             parent=self.personalGroup
         )
-        self.languageCard = ComboBoxSettingCard(
-            cfg.language,
-            FIF.LANGUAGE,
-            self.tr('Language'),
-            self.tr('Set your preferred language for UI'),
-            texts=['简体中文', '繁體中文', 'English', self.tr('Use system setting')],
-            parent=self.personalGroup
-        )
 
         # update software
         self.updateSoftwareGroup = SettingCardGroup(
@@ -111,9 +102,16 @@ class SettingInterface(ScrollArea):
             self.tr('Version') + " " + VERSION,
             self.aboutGroup
         )
+        self.logoutCard = PrimaryPushSettingCard(
+            '退出',
+            FIF.EMBED,
+            '退出登录', '退出当前登录的账号，下次你必须重新登录',
+            parent=self.aboutGroup
+        )
 
         self.__initWidget()
         self.__connectSignalToSlot()
+
 
     def __initWidget(self):
         self.resize(1000, 800)
@@ -142,7 +140,6 @@ class SettingInterface(ScrollArea):
         self.personalGroup.addSettingCard(self.themeCard)
         self.personalGroup.addSettingCard(self.themeColorCard)
         self.personalGroup.addSettingCard(self.zoomCard)
-        self.personalGroup.addSettingCard(self.languageCard)
 
 
         self.updateSoftwareGroup.addSettingCard(self.updateOnStartUpCard)
@@ -150,6 +147,7 @@ class SettingInterface(ScrollArea):
         self.aboutGroup.addSettingCard(self.helpCard)
         self.aboutGroup.addSettingCard(self.feedbackCard)
         self.aboutGroup.addSettingCard(self.aboutCard)
+        self.aboutGroup.addSettingCard(self.logoutCard)
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
@@ -166,6 +164,7 @@ class SettingInterface(ScrollArea):
             duration=1500,
             parent=self
         )
+
 
     def __connectSignalToSlot(self):
         """ connect signal to slot """
