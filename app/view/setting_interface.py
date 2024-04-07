@@ -17,7 +17,6 @@ from ..common.style_sheet import StyleSheet
 
 class SettingInterface(ScrollArea):
     """ Setting interface """
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.scrollWidget = QWidget()
@@ -103,6 +102,12 @@ class SettingInterface(ScrollArea):
             self.tr('Version') + " " + VERSION,
             self.aboutGroup
         )
+        self.logoutCard = PrimaryPushSettingCard(
+            '退出',
+            FIF.EMBED,
+            '退出登录', '退出当前登录的账号，下次你必须重新登录',
+            parent=self.aboutGroup
+        )
 
         self.__initWidget()
         self.__connectSignalToSlot()
@@ -142,6 +147,7 @@ class SettingInterface(ScrollArea):
         self.aboutGroup.addSettingCard(self.helpCard)
         self.aboutGroup.addSettingCard(self.feedbackCard)
         self.aboutGroup.addSettingCard(self.aboutCard)
+        self.aboutGroup.addSettingCard(self.logoutCard)
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
@@ -159,6 +165,7 @@ class SettingInterface(ScrollArea):
             parent=self
         )
 
+
     def __connectSignalToSlot(self):
         """ connect signal to slot """
         cfg.appRestartSig.connect(self.__showRestartTooltip)
@@ -171,4 +178,3 @@ class SettingInterface(ScrollArea):
         # about
         self.feedbackCard.clicked.connect(
             lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))
-        

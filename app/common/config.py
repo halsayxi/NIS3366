@@ -46,8 +46,7 @@ class Config(QConfig):
 
     # software update
     checkUpdateAtStartUp = ConfigItem("Update", "CheckUpdateAtStartUp", True, BoolValidator())
-
-
+    
 YEAR = 2024
 AUTHOR = "NIS3366"
 VERSION = "0.1.0"
