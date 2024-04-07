@@ -1586,62 +1586,62 @@ In that case, I would accept it no matter which side the ball falls on.</source>
 <context>
     <name>TextInterface</name>
     <message>
-        <location filename="../../view/text_interface.py" line="25"/>
+        <location filename="../../view/chiper_interface.py" line="25"/>
         <source>ko no dio da！</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="27"/>
+        <location filename="../../view/chiper_interface.py" line="27"/>
         <source>A LineEdit with a clear button</source>
         <translation>帶清空按鈕的輸入框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="87"/>
+        <location filename="../../view/chiper_interface.py" line="87"/>
         <source>A DoubleSpinBox with a spin button</source>
         <translation>浮點數旋轉框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="94"/>
+        <location filename="../../view/chiper_interface.py" line="94"/>
         <source>A DateEdit with a spin button</source>
         <translation>日期編輯框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="101"/>
+        <location filename="../../view/chiper_interface.py" line="101"/>
         <source>A TimeEdit with a spin button</source>
         <translation>時間編輯框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="108"/>
+        <location filename="../../view/chiper_interface.py" line="108"/>
         <source>A DateTimeEdit with a spin button</source>
         <translation>日期時間編輯框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="80"/>
+        <location filename="../../view/chiper_interface.py" line="80"/>
         <source>A SpinBox with a spin button</source>
         <translation>旋轉框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="119"/>
+        <location filename="../../view/chiper_interface.py" line="119"/>
         <source>A simple TextEdit</source>
         <translation>富文本框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="63"/>
+        <location filename="../../view/chiper_interface.py" line="63"/>
         <source>A autosuggest line edit</source>
         <translation>帶補全功能的輸入框</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="35"/>
+        <location filename="../../view/chiper_interface.py" line="35"/>
         <source>Type a stand name</source>
         <translation>輸入替身名稱</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="72"/>
+        <location filename="../../view/chiper_interface.py" line="72"/>
         <source>Enter your password</source>
         <translation>請輸入密碼</translation>
     </message>
     <message>
-        <location filename="../../view/text_interface.py" line="73"/>
+        <location filename="../../view/chiper_interface.py" line="73"/>
         <source>A password line edit</source>
         <translation>密碼輸入框</translation>
     </message>
