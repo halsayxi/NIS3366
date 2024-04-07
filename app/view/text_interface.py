@@ -11,7 +11,7 @@ from qfluentwidgets import (PasswordLineEdit, ListWidget, SpinBox,
 
 from .gallery_interface import GalleryInterface
 from ..common.translator import Translator
-from app.chiper_book.encryption import hash_key
+from app.chiper_book.encryption import hash_key, decrypt, encrypt
 from app.chiper_book.password_manager import PasswordManager
 from app.chiper_book.database import Database
 from app.chiper_book.password_generator import generate_password
@@ -40,13 +40,20 @@ class TextInterface(GalleryInterface):
         self.listWidget.setFixedHeight(500)
         self.vBoxLayout.addWidget(self.listWidget)
 
-        self.button = PushButton(self.tr('创建新密码'))
-        self.button.clicked.connect(self.new_password)
-        self.button.setMaximumWidth(200)
-        self.vBoxLayout.addWidget(self.button)
+        self.newPassword = PushButton(self.tr('创建新密码'))
+        self.newPassword.clicked.connect(self.new_password)
+        self.newPassword.setMaximumWidth(200)
+        self.vBoxLayout.addWidget(self.newPassword)
+
+        self.resetKey = PushButton(self.tr('重置密钥'))
+        self.resetKey.clicked.connect(self.reset_key)
+        self.resetKey.setMaximumWidth(200)
+        self.vBoxLayout.addWidget(self.resetKey)
 
     def new_password(self):
         w = GetKeyMessage(self)
+        if not self.db.get_key():
+            self.initialize_key()
         if w.exec():
             key = w.urlLineEdit.text()
             self.is_valid_key = self.password_manager.is_valid_key(key)
@@ -98,7 +105,14 @@ class TextInterface(GalleryInterface):
         w.buttonLayout.insertStretch(1)
         if w.exec():
             key = w.urlLineEdit.text()
-            self.password_manager.set_key(key)
+            if key:  # 检查密钥是否为空
+                self.password_manager.set_key(key)
+            else:
+                w = Dialog("ERROR", "密钥不能为空")
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
 
     def get_password(self, app_name):
         w = GetKeyMessage(self)
@@ -115,7 +129,7 @@ class TextInterface(GalleryInterface):
                     print('取消')
             else:
                 encrypted_password = self.password_manager.get_password(app_name, key)
-                w = Dialog("提示", "密钥: " + encrypted_password)
+                w = Dialog("提示", "密码: " + encrypted_password)
                 if w.exec():
                     print('确认')
                 else:
@@ -125,6 +139,8 @@ class TextInterface(GalleryInterface):
 
     def delete_password(self, app_name):
         w = GetKeyMessage(self)
+        if not self.db.get_key():
+            self.initialize_key()
         if not self.db.get_key():
             self.initialize_key()
         if w.exec():
@@ -155,7 +171,7 @@ class TextInterface(GalleryInterface):
 
             # 创建一个QLabel和一个QPushButton
             label = QLabel(app_name)
-            view_button = PushButton("查看密钥")
+            view_button = PushButton("查看密码")
             delete_button = PushButton("删除密码")
             view_button.setMaximumWidth(150)
             delete_button.setMaximumWidth(150)
@@ -172,6 +188,36 @@ class TextInterface(GalleryInterface):
             item.setSizeHint(widget.sizeHint())
             self.listWidget.addItem(item)
             self.listWidget.setItemWidget(item, widget)
+
+    def reset_key(self):
+        w = GetKeyMessage(self)
+        if w.exec():
+            key = w.urlLineEdit.text()
+            self.is_valid_key = self.password_manager.is_valid_key(key)
+            old_key = hash_key(key)
+        else:
+            return
+        w = ResetKey(self)
+        if not self.is_valid_key:
+            w = Dialog("ERROR", "密钥错误")
+            if w.exec():
+                print('确认')
+            else:
+                print('取消')
+            return
+        if w.exec():
+            key = w.urlLineEdit.text()
+            new_key = hash_key(key)
+            passwords = self.db.get_all_passwords()
+            self.password_manager.reset_key(key)
+            for password in passwords:
+                try:
+                    decrypted_password = decrypt(old_key, password['encrypted_password'])
+                    encrypted_password = encrypt(new_key, decrypted_password)
+                    self.db.collection.update_one({'_id': password['_id']},
+                                                  {'$set': {'encrypted_password': encrypted_password}})
+                except Exception as e:
+                    print(f"处理密码时出现错误: {e}")
 
 
 class GetKeyMessage(MessageBoxBase):
@@ -244,6 +290,24 @@ class GeneratePassword(MessageBoxBase):
         self.viewLayout.addWidget(self.has_digits)
         self.viewLayout.addWidget(self.has_special_chars)
         self.viewLayout.addWidget(self.length)
+
+        # 设置对话框的最小宽度
+        self.widget.setMinimumWidth(350)
+
+
+class ResetKey(MessageBoxBase):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.titleLabel = SubtitleLabel('重置密钥')
+        self.urlLineEdit = PasswordLineEdit()
+
+        self.urlLineEdit.setPlaceholderText('输入密钥key')
+        self.urlLineEdit.setClearButtonEnabled(True)
+
+        # 将组件添加到布局中
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.urlLineEdit)
 
         # 设置对话框的最小宽度
         self.widget.setMinimumWidth(350)
