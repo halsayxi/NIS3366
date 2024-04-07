@@ -154,7 +154,7 @@ class HomeInterface(ScrollArea):
             title="密码本",
             content=self.tr(
                 "密码管理"),
-            routeKey="textInterface",
+            routeKey="PasswordManagerSystem",
             index=12
         )
         '''
