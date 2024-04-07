@@ -106,6 +106,7 @@ def train(x,y):
     NAME = ["多项式贝叶斯", "伯努利贝叶斯", "Decision Tree", "Random Forest", "linear regression", "linerSVC", "svc-rbf"]
 
     best_model = None
+    best_name = None
     best_f1 = 0
     best_precision = 0
 
@@ -132,12 +133,14 @@ def train(x,y):
             best_model = model
             best_f1 = f1
             best_precision = precision
+            best_name = modelName
 
         # joblib.dump(model, './model.pkl')  # 将模型保存到本地
 
     # 保存性能最好的模型
     if best_model:
         joblib.dump(best_model, './best_model.pkl')
+        print("最佳模型"+best_name)
         print("最佳模型F1评分：{}%".format(round(100 * best_f1, 2)))
         print("最佳模型精度评分：{}%".format(round(100 * best_precision, 2)))
     else:
