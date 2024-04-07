@@ -130,14 +130,14 @@ class HomeInterface(ScrollArea):
             icon="app/resource/images/controls/Checkbox.png",
             title="恶意软件检测",
             content=self.tr(
-                "运用大模型检测软件是否安全"),
+                "运用机器学习算法检测软件是否安全"),
             routeKey="MalwareDetectionInterface",
             index=0
         )
         basicInputView.addSampleCard(
             icon="app/resource/images/controls/Checkbox.png",
             title="恶意流量监测",
-            content=self.tr("运用大模型检测流量是否安全"),
+            content=self.tr("运用机器学习算法检测流量是否安全"),
             routeKey="MalTrafficMonitorInterface",
             index=8
         )

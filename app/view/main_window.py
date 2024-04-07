@@ -36,6 +36,7 @@ class MainWindow(FluentWindow):
         self.verifierInterface = VerifierInterface(self)
         self.settingInterface = SettingInterface(self)
         self.chiperInterface = ChiperInterface(self)
+
         # enable acrylic effect
         self.navigationInterface.setAcrylicEnabled(True)
 

@@ -1,0 +1,9 @@
+int a,a0,b,b0;
+{true}
+
+a0 = a;
+b0 = b;
+a = a + b;
+b = a - b;
+a = a - b;
+{a == b0 && b == a0}

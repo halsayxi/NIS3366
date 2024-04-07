@@ -50,9 +50,9 @@ class Config(QConfig):
 YEAR = 2024
 AUTHOR = "NIS3366"
 VERSION = "0.1.0"
-HELP_URL = "https://github.com/halsayxi/NIS3366"
+HELP_URL = "https://www.bilibili.com/video/BV1C1421m7Xa/?vd_source=107c7e0466706b6c8311ec4f491dae42"
 REPO_URL = "https://github.com/halsayxi/NIS3366"
-DESIGN_URL = "https://github.com/halsayxi/NIS3366"
+DESIGN_URL = "https://drive.google.com/file/d/1ASvevDL4M49nzbRjbFTA0lRa2dPRl83u/view?usp=drive_link"
 FEEDBACK_URL = "https://github.com/halsayxi/NIS3366/issues"
 RELEASE_URL = "https://github.com/halsayxi/NIS3366"
 

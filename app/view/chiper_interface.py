@@ -18,9 +18,7 @@ from app.chiper_book.password_generator import generate_password
 
 
 class ChiperInterface(GalleryInterface):
-
     """ Chiper interface """
-
 
     def __init__(self, parent=None):
         t = Translator()
