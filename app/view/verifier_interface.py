@@ -100,7 +100,8 @@ class UnboundedVerifier(QWidget):
 
     def FuncIntro(self):
         title = "功能介绍"
-        content = '''我们设计了两类程序验证器来满足您的需求。 \n 
+        content = '''上传或写入符合语法的程序，我们将验证程序的正确性。\n
+            我们设计了两类程序验证器来满足您的需求。 \n 
             无界整数与实数验证器：支持无界整数与任意精度实数，偏向于数学语境；\n 
             有界整数与浮点数验证器：支持有符号整数，无符号整数，浮点数三种数据类型，考虑溢出与精度等问题，适用于计算机语境。'''
         w = Dialog(title, content, self.window())
@@ -325,7 +326,7 @@ class VerifierInterface(GalleryInterface):
         t = Translator()
         super().__init__(
             title=t.verifier,
-            subtitle='上传或输入符合语法规则的程序，我们将验证程序的正确性',
+            subtitle='Program Correctness Testing',
             parent=parent
         )
         self.setObjectName('verifierInterface')
