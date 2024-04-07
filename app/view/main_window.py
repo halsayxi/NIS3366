@@ -13,12 +13,13 @@ from .malware_detection_interface import MalwareDetectionInterface
 from .mal_traffic_monitor_interface import MalTrafficMonitorInterface
 from .verifier_interface import VerifierInterface
 from .setting_interface import SettingInterface
-from .text_interface import TextInterface
+from .chiper_interface import ChiperInterface
 from ..common.config import cfg
 from ..common.icon import Icon
 from ..common.signal_bus import signalBus
 from ..common.translator import Translator
 from ..common import resource
+from ..common.config import DESIGN_URL
 
 
 
@@ -34,7 +35,7 @@ class MainWindow(FluentWindow):
         self.MalTrafficMonitorInterface = MalTrafficMonitorInterface(self)
         self.verifierInterface = VerifierInterface(self)
         self.settingInterface = SettingInterface(self)
-        self.textInterface = TextInterface(self)
+        self.chiperInterface = ChiperInterface(self)
 
         # enable acrylic effect
         self.navigationInterface.setAcrylicEnabled(True)
@@ -57,10 +58,10 @@ class MainWindow(FluentWindow):
         self.navigationInterface.addSeparator()
 
         pos = NavigationItemPosition.SCROLL
-        self.addSubInterface(self.MalwareDetectionInterface, FIF.SEARCH_MIRROR,t.malDetec, pos)
-        self.addSubInterface(self.MalTrafficMonitorInterface, FIF.MESSAGE, t.flowDetec, pos)
-        self.addSubInterface(self.verifierInterface, Icon.MENU, t.verifier, pos)
-        self.addSubInterface(self.textInterface, Icon.TEXT, t.text, pos)
+        self.addSubInterface(self.MalwareDetectionInterface, FIF.VPN,t.malDetec, pos)
+        self.addSubInterface(self.MalTrafficMonitorInterface, FIF.SEARCH_MIRROR, t.flowDetec, pos)
+        self.addSubInterface(self.verifierInterface, FIF.ACCEPT_MEDIUM, t.verifier, pos)
+        self.addSubInterface(self.chiperInterface, Icon.TEXT, t.cipher, pos)
         self.addSubInterface(
             self.settingInterface, FIF.SETTING, self.tr('Settings'), NavigationItemPosition.BOTTOM)
 
@@ -86,9 +87,9 @@ class MainWindow(FluentWindow):
     def onSupport(self):
         language = cfg.get(cfg.language).value
         if language.name() == "zh_CN":
-            QDesktopServices.openUrl(QUrl(ZH_SUPPORT_URL))
+            QDesktopServices.openUrl(QUrl(DESIGN_URL))
         else:
-            QDesktopServices.openUrl(QUrl(EN_SUPPORT_URL))
+            QDesktopServices.openUrl(QUrl(DESIGN_URL))
 
     def resizeEvent(self, e):
         super().resizeEvent(e)

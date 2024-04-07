@@ -47,7 +47,7 @@ class Database:
                 id SERIAL PRIMARY KEY,
                 username VARCHAR(255) NOT NULL,
                 app_name VARCHAR(255) NOT NULL,
-                encrypted_password TEXT NOT NULL,
+                encrypted_password BYTEA NOT NULL,
                 CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users(username)
             )
             """
@@ -64,8 +64,8 @@ class Database:
     # 将主密钥存储到数据库中
     def store_key(self, key_salt_hash, salt):
         username = globals.username
-        print(salt)
-        print(key_salt_hash)
+        # print(salt)
+        # print(key_salt_hash)
         sql = "INSERT INTO keys (username, key_salt_hash, salt) VALUES (%s, %s, %s)"
         self.cursor.execute(sql, (username, key_salt_hash, salt))
         self.conn.commit()
@@ -97,6 +97,7 @@ class Database:
         sql = "SELECT * FROM user_passwords WHERE username = %s"
         self.cursor.execute(sql, (username,))
         results = self.cursor.fetchall()
+        # print(results)
         return results
 
     # 判断数据库中是否存在指定用户
