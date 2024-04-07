@@ -13,7 +13,7 @@ from .malware_detection_interface import MalwareDetectionInterface
 from .mal_traffic_monitor_interface import MalTrafficMonitorInterface
 from .verifier_interface import VerifierInterface
 from .setting_interface import SettingInterface
-from .text_interface import TextInterface
+from .chiper_interface import TextInterface
 from ..common.config import cfg
 from ..common.icon import Icon
 from ..common.signal_bus import signalBus
