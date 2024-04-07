@@ -326,7 +326,7 @@ class VerifierInterface(GalleryInterface):
         t = Translator()
         super().__init__(
             title=t.verifier,
-            subtitle='Program Correctness Testing',
+            subtitle='Program Correctness Verifitation',
             parent=parent
         )
         self.setObjectName('verifierInterface')

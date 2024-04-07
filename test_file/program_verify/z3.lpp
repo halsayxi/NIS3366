@@ -1,0 +1,4 @@
+int z, t;
+{true}
+
+{forall z,t (t>z)or 1+1==2}
