@@ -17,7 +17,7 @@ from app.chiper_book.database import Database
 from app.chiper_book.password_generator import generate_password
 
 
-class TextInterface(GalleryInterface):
+class ChiperInterface(GalleryInterface):
     """ Text interface """
 
     def __init__(self, parent=None):

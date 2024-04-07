@@ -13,7 +13,7 @@ from .malware_detection_interface import MalwareDetectionInterface
 from .mal_traffic_monitor_interface import MalTrafficMonitorInterface
 from .verifier_interface import VerifierInterface
 from .setting_interface import SettingInterface
-from .chiper_interface import TextInterface
+from .chiper_interface import ChiperInterface
 from ..common.config import cfg
 from ..common.icon import Icon
 from ..common.signal_bus import signalBus
@@ -34,7 +34,7 @@ class MainWindow(FluentWindow):
         self.MalTrafficMonitorInterface = MalTrafficMonitorInterface(self)
         self.verifierInterface = VerifierInterface(self)
         self.settingInterface = SettingInterface(self)
-        self.textInterface = TextInterface(self)
+        self.textInterface = ChiperInterface(self)
 
         # enable acrylic effect
         self.navigationInterface.setAcrylicEnabled(True)
