@@ -65,14 +65,6 @@ class SettingInterface(ScrollArea):
             ],
             parent=self.personalGroup
         )
-        self.languageCard = ComboBoxSettingCard(
-            cfg.language,
-            FIF.LANGUAGE,
-            self.tr('Language'),
-            self.tr('Set your preferred language for UI'),
-            texts=['简体中文', '繁體中文', 'English', self.tr('Use system setting')],
-            parent=self.personalGroup
-        )
 
         # update software
         self.updateSoftwareGroup = SettingCardGroup(
@@ -115,6 +107,7 @@ class SettingInterface(ScrollArea):
         self.__initWidget()
         self.__connectSignalToSlot()
 
+
     def __initWidget(self):
         self.resize(1000, 800)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -142,7 +135,6 @@ class SettingInterface(ScrollArea):
         self.personalGroup.addSettingCard(self.themeCard)
         self.personalGroup.addSettingCard(self.themeColorCard)
         self.personalGroup.addSettingCard(self.zoomCard)
-        self.personalGroup.addSettingCard(self.languageCard)
 
 
         self.updateSoftwareGroup.addSettingCard(self.updateOnStartUpCard)
@@ -179,3 +171,4 @@ class SettingInterface(ScrollArea):
         # about
         self.feedbackCard.clicked.connect(
             lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))
+        

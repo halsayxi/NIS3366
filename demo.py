@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QApplication
 from qfluentwidgets import FluentTranslator
 
 from app.common.config import cfg
-from app.view.main_window import MainWindow
+from app.login_register.login_window import LoginWidget
 
 
 # enable dpi scale
@@ -35,8 +35,8 @@ galleryTranslator.load(locale, "gallery", ".", "app/resource/i18n")
 app.installTranslator(translator)
 app.installTranslator(galleryTranslator)
 
-# create main window
-w = MainWindow()
-w.show()
+# create login window
+login_widget = LoginWidget()  # 创建 LoginWidget 实例
+login_widget.show()  # 显示 LoginWidget
 
 app.exec_()
