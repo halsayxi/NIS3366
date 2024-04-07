@@ -5,7 +5,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QCompleter, QListWidgetItem, QVBoxLayout, QHBoxLayout
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout
 
-from qfluentwidgets import (PasswordLineEdit, ListWidget, PushButton, MessageBoxBase, SubtitleLabel, LineEdit)
+from qfluentwidgets import (PasswordLineEdit, ListWidget,
+                            PushButton, MessageBoxBase,
+                            SubtitleLabel, LineEdit, Dialog, CheckBox)
 
 from .gallery_interface import GalleryInterface
 from ..common.translator import Translator
@@ -75,9 +77,16 @@ class TextInterface(GalleryInterface):
 
 
         # 创建一个PushButton对象
-        self.button = PushButton(self.tr('显示消息框'))
-        self.button.clicked.connect(self.initialize_key)
+        self.button = PushButton(self.tr('创建新密钥'))
+        self.button.clicked.connect(self.new_password)
         self.vBoxLayout.addWidget(self.button)
+
+    def new_password(self):
+        w = GeneratePassword(self)
+        if w.exec():
+            print('确认')
+        else:
+            print('取消')
 
     def initialize_key(self):
         w = InitializeKeyMessage(self)
@@ -95,7 +104,18 @@ class TextInterface(GalleryInterface):
             key = w.urlLineEdit.text()
             self.is_valid_key = self.password_manager.is_valid_key(key)
             if not self.is_valid_key:
-                print(app_name)
+                w = Dialog("ERROR", "密钥错误")
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
+            else:
+                encrypted_password = self.password_manager.get_password(app_name, key)
+                w = Dialog("提示", "密钥: " + encrypted_password)
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
 
 
 class GetKeyMessage(MessageBoxBase):
@@ -130,6 +150,26 @@ class InitializeKeyMessage(MessageBoxBase):
         # 将组件添加到布局中
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.urlLineEdit)
+
+        # 设置对话框的最小宽度
+        self.widget.setMinimumWidth(350)
+
+class GeneratePassword(MessageBoxBase):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.titleLabel = SubtitleLabel('创建密码')
+        self.checkBox = CheckBox("Text")
+
+        # 选中复选框
+        self.checkBox.setChecked(True)
+
+        # 监听复选框状态改变信号
+        self.checkBox.stateChanged.connect(lambda: print(self.checkBox.isChecked()))
+
+        # 将组件添加到布局中
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.checkBox)
 
         # 设置对话框的最小宽度
         self.widget.setMinimumWidth(350)
