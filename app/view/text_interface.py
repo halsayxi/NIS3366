@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QCompleter, QListWidgetItem, QVBoxLayout, QHBoxLayout
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout
 
-from qfluentwidgets import (PasswordLineEdit, ListWidget,
+from qfluentwidgets import (PasswordLineEdit, ListWidget, SpinBox,
                             PushButton, MessageBoxBase,
                             SubtitleLabel, LineEdit, Dialog, CheckBox)
 
@@ -15,8 +15,6 @@ from app.chiper_book.encryption import hash_key
 from app.chiper_book.password_manager import PasswordManager
 from app.chiper_book.database import Database
 from app.chiper_book.password_generator import generate_password
-
-import threading
 
 
 class TextInterface(GalleryInterface):
@@ -82,11 +80,40 @@ class TextInterface(GalleryInterface):
         self.vBoxLayout.addWidget(self.button)
 
     def new_password(self):
-        w = GeneratePassword(self)
+        w = GetKeyMessage(self)
+        key = None
         if w.exec():
-            print('确认')
-        else:
-            print('取消')
+            key = w.urlLineEdit.text()
+            self.is_valid_key = self.password_manager.is_valid_key(key)
+        w = GeneratePassword(self)
+        if not self.is_valid_key:
+            w = Dialog("ERROR", "密钥错误")
+            if w.exec():
+                print('确认')
+            else:
+                print('取消')
+            return
+
+        if w.exec():
+            uppercase = w.uppercase.isChecked()
+            lowercase = w.lowercase.isChecked()
+            has_digits = w.has_digits.isChecked()
+            has_special_chars = w.has_special_chars.isChecked()
+            length = int(w.length.text())
+            app_name = w.app_name.text()
+            key_hash = hash_key(key)
+
+            if self.db.is_app_name_exists(app_name):
+                w = Dialog("ERROR", "应用已存在")
+                if w.exec():
+                    print('确认')
+                else:
+                    print('取消')
+                return
+            else:
+                password = generate_password(length=length, has_uppercase=uppercase, has_lowercase=lowercase,
+                                             has_digits=has_digits, has_special_chars=has_special_chars)
+                self.password_manager.store_password(app_name, password, key_hash)
 
     def initialize_key(self):
         w = InitializeKeyMessage(self)
@@ -159,17 +186,33 @@ class GeneratePassword(MessageBoxBase):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.titleLabel = SubtitleLabel('创建密码')
-        self.checkBox = CheckBox("Text")
+
+        self.app_name = LineEdit()
+        self.app_name.setPlaceholderText("输入应用名")
+
+        self.uppercase = CheckBox("包含大写字母")
+        self.lowercase = CheckBox("包含小写字母")
+        self.has_digits = CheckBox("包含数字")
+        self.has_special_chars = CheckBox("包含特殊字符")
+
+        self.length = SpinBox()
+        self.length.setRange(6, 50)
+        self.length.setValue(6)
 
         # 选中复选框
-        self.checkBox.setChecked(True)
-
-        # 监听复选框状态改变信号
-        self.checkBox.stateChanged.connect(lambda: print(self.checkBox.isChecked()))
+        self.uppercase.setChecked(True)
+        self.lowercase.setChecked(True)
+        self.has_digits.setChecked(True)
+        self.has_special_chars.setChecked(True)
 
         # 将组件添加到布局中
         self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.checkBox)
+        self.viewLayout.addWidget(self.app_name)
+        self.viewLayout.addWidget(self.uppercase)
+        self.viewLayout.addWidget(self.lowercase)
+        self.viewLayout.addWidget(self.has_digits)
+        self.viewLayout.addWidget(self.has_special_chars)
+        self.viewLayout.addWidget(self.length)
 
         # 设置对话框的最小宽度
         self.widget.setMinimumWidth(350)
