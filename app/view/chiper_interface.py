@@ -18,12 +18,14 @@ from app.chiper_book.password_generator import generate_password
 
 
 class ChiperInterface(GalleryInterface):
-    """ Text interface """
+
+    """ Chiper interface """
+
 
     def __init__(self, parent=None):
         t = Translator()
         super().__init__(
-            title=t.text,
+            title=t.cipher,
             subtitle="Password Management System",
             parent=parent
         )
@@ -37,7 +39,7 @@ class ChiperInterface(GalleryInterface):
         self.listWidget = ListWidget()
         self.load_passwords()
 
-        self.listWidget.setFixedHeight(500)
+        self.listWidget.setFixedHeight(400)
         self.vBoxLayout.addWidget(self.listWidget)
 
         self.newPassword = PushButton(self.tr('创建新密码'))
@@ -161,7 +163,7 @@ class ChiperInterface(GalleryInterface):
     def load_passwords(self):
         self.listWidget.clear()  # 清空列表
         passwords = self.db.get_all_passwords()
-        app_names = [password['app_name'] for password in passwords]  # 使用列表推导式获取所有app_name
+        app_names = [password[2] for password in passwords]  # 使用列表推导式获取所有app_name
 
         # 添加列表项
         for app_name in app_names:
@@ -207,18 +209,7 @@ class ChiperInterface(GalleryInterface):
             return
         if w.exec():
             key = w.urlLineEdit.text()
-            new_key = hash_key(key)
-            passwords = self.db.get_all_passwords()
             self.password_manager.reset_key(key)
-            for password in passwords:
-                try:
-                    decrypted_password = decrypt(old_key, password['encrypted_password'])
-                    encrypted_password = encrypt(new_key, decrypted_password)
-                    self.db.collection.update_one({'_id': password['_id']},
-                                                  {'$set': {'encrypted_password': encrypted_password}})
-                except Exception as e:
-                    print(f"处理密码时出现错误: {e}")
-
 
 class GetKeyMessage(MessageBoxBase):
     """ Custom message box """

@@ -9,16 +9,16 @@ class PasswordManager:
     # 判断密钥是否正确
     def is_valid_key(self, key):
         key_info = self.db.get_key()
-        print(key_info)
+        # print(key_info)
         if key_info is None:
             return False
         else:
             salt = key_info[0]  # 第一个元素是 salt
             stored_key_hash= key_info[1]  # 第二个元素是 key_salt_hash
-            print(salt)
-            print(stored_key_hash)
+            # print(salt)
+            # print(stored_key_hash)
             provider_key_hash, _ = salt_hash_key(key, salt)
-            print(provider_key_hash)
+            # print(provider_key_hash)
             if provider_key_hash == stored_key_hash:
                 return True
             else:
@@ -45,6 +45,7 @@ class PasswordManager:
     # 获取指定应用的密码
     def get_password(self, app_name, key):
         result_password = self.db.get_password(app_name)  # 添加当前用户名
+        # print(result_password)
         is_valid_key = self.is_valid_key(key)
         if not is_valid_key:
             return "Invalid key"
@@ -52,4 +53,5 @@ class PasswordManager:
             return "No entry found for the given application name"
         else:
             key_hash = hash_key(key)
-            return decrypt(key_hash, result_password['encrypted_password'])
+
+            return decrypt(key_hash, bytes(result_password[3]))

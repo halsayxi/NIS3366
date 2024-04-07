@@ -40,8 +40,8 @@ class ToolBar(QWidget):
         self.subtitleLabel = CaptionLabel(subtitle, self)
 
         self.documentButton = PushButton(
-            self.tr('Documentation'), self, FluentIcon.DOCUMENT)
-        self.sourceButton = PushButton(self.tr('Source'), self, FluentIcon.GITHUB)
+            self.tr('帮助'), self, FluentIcon.DOCUMENT)
+        self.sourceButton = PushButton(self.tr('源代码'), self, FluentIcon.GITHUB)
         self.themeButton = ToolButton(FluentIcon.CONSTRACT, self)
         self.separator = SeparatorWidget(self)
         self.supportButton = ToolButton(FluentIcon.HEART, self)
@@ -87,7 +87,7 @@ class ToolBar(QWidget):
         self.documentButton.clicked.connect(
             lambda: QDesktopServices.openUrl(QUrl(HELP_URL)))
         self.sourceButton.clicked.connect(
-            lambda: QDesktopServices.openUrl(QUrl(EXAMPLE_URL)))
+            lambda: QDesktopServices.openUrl(QUrl(DESIGN_URL)))
         self.feedbackButton.clicked.connect(
             lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))
 
@@ -108,7 +108,7 @@ class ExampleCard(QWidget):
         self.sourceWidget = QFrame(self.card)
         self.sourcePath = sourcePath
         self.sourcePathLabel = BodyLabel(
-            self.tr('Source code'), self.sourceWidget)
+            self.tr('源代码'), self.sourceWidget)
         self.linkIcon = IconWidget(FluentIcon.LINK, self.sourceWidget)
 
         self.vBoxLayout = QVBoxLayout(self)

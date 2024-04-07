@@ -47,7 +47,7 @@ class Database:
                 id SERIAL PRIMARY KEY,
                 username VARCHAR(255) NOT NULL,
                 app_name VARCHAR(255) NOT NULL,
-                encrypted_password TEXT NOT NULL,
+                encrypted_password BYTEA NOT NULL,
                 CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users(username)
             )
             """
@@ -64,6 +64,65 @@ class Database:
     # 将主密钥存储到数据库中
     def store_key(self, key_salt_hash, salt):
         username = globals.username
-        print(salt)
-        print(key_salt_hash)
-        sql = "INSERT INTO keys
+        # print(salt)
+        # print(key_salt_hash)
+        sql = "INSERT INTO keys (username, key_salt_hash, salt) VALUES (%s, %s, %s)"
+        self.cursor.execute(sql, (username, key_salt_hash, salt))
+        self.conn.commit()
+
+    # 从数据库中检索指定应用的密码信息
+    def get_password(self, app_name):
+        username = globals.username
+        sql = "SELECT * FROM user_passwords WHERE username = %s AND app_name = %s"
+        self.cursor.execute(sql, (username, app_name))
+        result = self.cursor.fetchone()
+        return result
+
+    def get_key(self):
+        username = globals.username
+        sql = "SELECT salt, key_salt_hash FROM keys WHERE username = %s"
+        self.cursor.execute(sql, (username,))
+        result = self.cursor.fetchone()
+        
+        if result:
+            salt = bytes(result[0])
+            key_salt_hash = bytes(result[1])
+            return salt, key_salt_hash
+        else:
+            return None
+
+    # 获取指定用户的所有密码
+    def get_all_passwords(self):
+        username = globals.username
+        sql = "SELECT * FROM user_passwords WHERE username = %s"
+        self.cursor.execute(sql, (username,))
+        results = self.cursor.fetchall()
+        # print(results)
+        return results
+
+    # 判断数据库中是否存在指定用户
+    def is_app_name_exists(self, app_name):
+        username = globals.username
+        sql = "SELECT * FROM user_passwords WHERE username = %s AND app_name = %s"
+        self.cursor.execute(sql, (username, app_name))
+        result = self.cursor.fetchone()
+        return True if result else False
+
+    # 从数据库中删除指定用户的密码信息
+    def delete_password(self, app_name):
+        username = globals.username
+        sql = "DELETE FROM user_passwords WHERE username = %s AND app_name = %s"
+        self.cursor.execute(sql, (username, app_name))
+        self.conn.commit()
+
+    # 从数据库中删除指定用户的主密钥信息
+    def delete_key(self):
+        username = globals.username
+        sql = "DELETE FROM keys WHERE username = %s"
+        self.cursor.execute(sql, (username,))
+        self.conn.commit()
+
+    def __del__(self):
+        # 关闭游标和数据库连接
+        self.cursor.close()
+        self.conn.close()
