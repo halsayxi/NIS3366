@@ -92,7 +92,7 @@ bitvec_simple_grammar = """
         | var_use                      
         | "(" exp ")"  
         | "~" atom                      -> bit_not
-        | specifier "(" exp ")"         -> cast
+        | "(" specifier ")"   exp       -> cast
 
     COMMENT : "/*" /(.|\\n|\\r)+/ "*/"  
         |  "//" /(.)+/ NEWLINE

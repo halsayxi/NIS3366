@@ -12,7 +12,6 @@ class BitvecTypeChecker(Visitor):
         self.bit_num=int_bit_num
         self.float_type=float_type
         self.output = output
-        self.output.clear()
 
     def name_list(self, tree: Tree):
         type = tree.children[0].data
@@ -111,7 +110,7 @@ class BitvecTypeChecker(Visitor):
 
     def bit_xor(self, tree: Tree):
         if tree.children[0].type_specifier=="float" or tree.children[1].type_specifier=="float":
-            self.output.append("&表达式两边需要均为int型")
+            self.output.append("^表达式两边需要均为int型")
             self.error=True
             tree.type_specifier="int"
         elif tree.children[0].type_specifier=="unsigned_int" or tree.children[1].type_specifier=="unsigned_int":
@@ -121,7 +120,7 @@ class BitvecTypeChecker(Visitor):
     
     def bit_or(self, tree: Tree):
         if tree.children[0].type_specifier=="float" or tree.children[1].type_specifier=="float":
-            self.output.append("&表达式两边需要均为int型")
+            self.output.append("|表达式两边需要均为int型")
             self.error=True
             tree.type_specifier="int"
         elif tree.children[0].type_specifier=="unsigned_int" or tree.children[1].type_specifier=="unsigned_int":

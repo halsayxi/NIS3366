@@ -261,7 +261,8 @@ class HoareProver():
 
     def run(self, program):
         #语义分析，检查类型、变量使用等是否有误
-        #print("希望证明:\n", program, "\n")
+        self.output.clear()
+        self.output.append("希望证明:\n" + program + "\n")
         tree = self.hoare_parser.parse(program)
         checker = TypeChecker(self.output)
         checker.visit(tree.children[0])

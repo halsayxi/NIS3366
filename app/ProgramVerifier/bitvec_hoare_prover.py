@@ -417,7 +417,9 @@ class BitvecHoareProver():
         return flag 
 
     def run(self, program):
-        #print("希望证明:\n", program, "\n")
+        
+        self.output.clear()
+        self.output.append("希望证明:\n" + program + "\n")
         tree = self.hoare_parser.parse(program)
         checker = BitvecTypeChecker(self.int_bit_num, self.float_type, self.output)
         checker.visit(tree.children[0])

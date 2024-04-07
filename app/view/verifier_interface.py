@@ -84,8 +84,16 @@ class UnboundedVerifier(QWidget):
                 w.buttonLayout.insertStretch(1)
                 w.exec()
                 return
-            with open(self.filename) as f:
-                code=f.read()
+            try:
+                with open(self.filename) as f:
+                    code=f.read()
+            except:
+                w = Dialog("Warning", "文件存在不合格字符！", self.window())
+                w.setContentCopyable(True)
+                w.cancelButton.hide()
+                w.buttonLayout.insertStretch(1)
+                w.exec()
+                return
         try:
             prover.run(code)
         except:
@@ -234,8 +242,16 @@ class BoundedVerifier(QWidget):
                 w.buttonLayout.insertStretch(1)
                 w.exec()
                 return
-            with open(self.filename) as f:
-                code=f.read()
+            try:
+                with open(self.filename) as f:
+                    code=f.read()
+            except:
+                w = Dialog("Warning", "文件存在不合格字符！", self.window())
+                w.setContentCopyable(True)
+                w.cancelButton.hide()
+                w.buttonLayout.insertStretch(1)
+                w.exec()
+                return
         try:
             prover.run(code)
         except:
@@ -274,7 +290,7 @@ class BoundedVerifier(QWidget):
     shift_term := add_term | shift_term "<<" exp  | shift_term ">>" exp  
     add_term := product | exp "+" product | exp "-" product  
     product := atom | product "*" atom | product "/" atom | product "%" atom 
-    atom := INT | FLOAT | "-" atom | var_use | "(" exp ")" | "~" atom | specifier "(" exp ")" 
+    atom := INT | FLOAT | "-" atom | var_use | "(" exp ")" | "~" atom | "(" specifier ")" exp
     COMMENT := "/*" /(.|\\n|\\r)+/ "*/"   |   "//" /(.)+/ NEWLINE"""
         w = Dialog(title, content, self.window())
         w.setContentCopyable(True)

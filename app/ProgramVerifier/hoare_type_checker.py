@@ -9,7 +9,6 @@ class TypeChecker(Visitor):
         self.symbol_dict = {}
         self.error=False
         self.output = output
-        self.output.clear()
 
     def name_list(self, tree: Tree):
         type = tree.children[0].data
