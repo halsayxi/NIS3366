@@ -29,36 +29,25 @@ class TextInterface(GalleryInterface):
         )
         self.setObjectName('PasswordManagerSystem')
 
-        self.user_input = None
         self.password_manager = PasswordManager()
         self.db = Database()
-
         self.is_valid_key = False
-
-        # password line edit
-        passwordLineEdit = PasswordLineEdit(self)
-        passwordLineEdit.setFixedWidth(230)
-        passwordLineEdit.setPlaceholderText(self.tr("Enter your password"))
-        self.addExampleCard(
-            title=self.tr("A password line edit"),
-            widget=passwordLineEdit,
-            sourcePath='https://github.com/zhiyiYo/PyQt-Fluent-Widgets/blob/master/examples/text/line_edit/demo.py'
-        )
+        self.user_input = None
+        passwords = self.db.get_all_passwords()
+        app_names = [password['app_name'] for password in passwords]
 
         self.listWidget = ListWidget()
 
-        stands = ["QQ", "WeChat", "YouTube", "Twitter", "GitHUb"]
-
         # 添加列表项
-        for stand in stands:
+        for app_name in app_names:
             # 创建一个新的QWidget
             widget = QWidget()
             layout = QHBoxLayout(widget)
 
             # 创建一个QLabel和一个QPushButton
-            label = QLabel(stand)
+            label = QLabel(app_name)
             button = PushButton("查看密钥")
-            button.clicked.connect(lambda checked, stand=stand: self.get_password(stand))
+            button.clicked.connect(lambda checked, app_name=app_name: self.get_password(app_name))
 
             # 将QLabel和QPushButton添加到布局中
             layout.addWidget(label)
@@ -73,9 +62,7 @@ class TextInterface(GalleryInterface):
         self.listWidget.setFixedHeight(500)
         self.vBoxLayout.addWidget(self.listWidget)
 
-
-        # 创建一个PushButton对象
-        self.button = PushButton(self.tr('创建新密钥'))
+        self.button = PushButton(self.tr('创建新密码'))
         self.button.clicked.connect(self.new_password)
         self.vBoxLayout.addWidget(self.button)
 
@@ -114,6 +101,7 @@ class TextInterface(GalleryInterface):
                 password = generate_password(length=length, has_uppercase=uppercase, has_lowercase=lowercase,
                                              has_digits=has_digits, has_special_chars=has_special_chars)
                 self.password_manager.store_password(app_name, password, key_hash)
+                self.load_passwords()
 
     def initialize_key(self):
         w = InitializeKeyMessage(self)
@@ -144,6 +132,32 @@ class TextInterface(GalleryInterface):
                 else:
                     print('取消')
 
+    def load_passwords(self):
+        self.listWidget.clear()  # 清空列表
+        passwords = self.db.get_all_passwords()
+        app_names = [password['app_name'] for password in passwords]  # 使用列表推导式获取所有app_name
+
+        # 添加列表项
+        for app_name in app_names:
+            # 创建一个新的QWidget
+            widget = QWidget()
+            layout = QHBoxLayout(widget)
+
+            # 创建一个QLabel和一个QPushButton
+            label = QLabel(app_name)
+            button = PushButton("查看密钥")
+            button.clicked.connect(lambda checked, app_name=app_name: self.get_password(app_name))
+
+            # 将QLabel和QPushButton添加到布局中
+            layout.addWidget(label)
+            layout.addWidget(button)
+
+            # 创建一个QListWidgetItem，并将QWidget设置为其widget
+            item = QListWidgetItem(self.listWidget)
+            item.setSizeHint(widget.sizeHint())
+            self.listWidget.addItem(item)
+            self.listWidget.setItemWidget(item, widget)
+
 
 class GetKeyMessage(MessageBoxBase):
     """ Custom message box """
@@ -151,7 +165,7 @@ class GetKeyMessage(MessageBoxBase):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.titleLabel = SubtitleLabel('请输入密钥key')
-        self.urlLineEdit = LineEdit()
+        self.urlLineEdit = PasswordLineEdit()
 
         self.urlLineEdit.setPlaceholderText('输入密钥key')
         self.urlLineEdit.setClearButtonEnabled(True)
@@ -163,13 +177,14 @@ class GetKeyMessage(MessageBoxBase):
         # 设置对话框的最小宽度
         self.widget.setMinimumWidth(350)
 
+
 class InitializeKeyMessage(MessageBoxBase):
     """ Custom message box """
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.titleLabel = SubtitleLabel('当前未定义密钥！')
-        self.urlLineEdit = LineEdit()
+        self.urlLineEdit = PasswordLineEdit()
 
         self.urlLineEdit.setPlaceholderText('请输入密钥，务必记住它')
         self.urlLineEdit.setClearButtonEnabled(True)
@@ -180,6 +195,7 @@ class InitializeKeyMessage(MessageBoxBase):
 
         # 设置对话框的最小宽度
         self.widget.setMinimumWidth(350)
+
 
 class GeneratePassword(MessageBoxBase):
 
