@@ -106,7 +106,7 @@ The following are additional dependencies required by the software:
 - You can use command-line control to facilitate debugging of the database:
 
   ```
-  $ postgres://username:password@host:port/dbname
+  psql -U <username> -d <database_name> -h <host>
   ```
 
 - When modifying the database connection information in `utils.py`, please proceed with caution to ensure consistency with the actual configuration.

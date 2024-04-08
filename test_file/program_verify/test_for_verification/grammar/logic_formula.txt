@@ -1,0 +1,4 @@
+int z, t,m,n,o;
+{exist m,n (o==0 && m>o)}
+
+{forall z,t (t>z)or 1+1==2}

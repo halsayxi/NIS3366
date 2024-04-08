@@ -1,0 +1,5 @@
+float a[9];
+int t, b[2];
+{true}
+b[t*a[3]]=9;
+{false}

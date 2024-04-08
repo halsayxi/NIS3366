@@ -1,0 +1,4 @@
+int a[3];
+{true}
+a=2;
+{true}
