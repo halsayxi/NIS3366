@@ -1,7 +1,5 @@
 <center><h1>Software Security Guardian</h1></center>
 
-<center>NIS3366 Group 1</center>
-
 <center>Wang Hexi, Shi Xuanyu, Liu Can, Gu Yunming</center>
 
 
